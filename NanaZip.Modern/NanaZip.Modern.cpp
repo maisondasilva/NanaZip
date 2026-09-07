@@ -229,10 +229,28 @@ namespace
     HWND K7ModernCreateXamlDialog(
         _In_opt_ HWND ParentWindowHandle)
     {
-        return ::K7ModernCreateXamlWindow(
+        HWND WindowHandle = ::K7ModernCreateXamlWindow(
             ParentWindowHandle,
             WS_EX_STATICEDGE | WS_EX_DLGMODALFRAME,
             WS_CAPTION | WS_SYSMENU);
+
+        MILE_WINDOW_SYSTEM_BACKDROP_TYPE SystemBackdropType =
+            MILE_WINDOW_SYSTEM_BACKDROP_TYPE_AUTO;
+        if (S_OK == ::MileGetWindowSystemBackdropTypeAttribute(
+            WindowHandle,
+            &SystemBackdropType))
+        {
+            if (MILE_WINDOW_SYSTEM_BACKDROP_TYPE_AUTO != SystemBackdropType &&
+                MILE_WINDOW_SYSTEM_BACKDROP_TYPE_NONE != SystemBackdropType)
+            {
+                const COLORREF IgnoreAccentColor = static_cast<COLORREF>(-2);
+                ::MileSetWindowCaptionColorAttribute(
+                    WindowHandle,
+                    IgnoreAccentColor);
+            }
+        }
+
+        return WindowHandle;
     }
 
     int K7ModernShowXamlWindow(
@@ -553,6 +571,7 @@ EXTERN_C INT WINAPI K7ModernShowCopyLocationDialog(
     _In_opt_ LPCWSTR Subtitle,
     _In_opt_ LPCWSTR AdditionalInformation,
     _In_opt_ LPCWSTR InitialPath,
+    _In_ BOOL ShowExtractAll,
     _In_ SUBCLASSPROC WindowSubclassHandler,
     _In_ LPVOID WindowSubclassContext)
 {
@@ -572,7 +591,8 @@ EXTERN_C INT WINAPI K7ModernShowCopyLocationDialog(
         Title,
         Subtitle,
         AdditionalInformation,
-        InitialPath);
+        InitialPath,
+        ShowExtractAll);
 
     if (WindowSubclassHandler)
     {

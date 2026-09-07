@@ -6,6 +6,9 @@
 
 #include "../../../Common/IntToString.h"
 #include "../../../Common/StringConvert.h"
+// **************** NanaZip Modification Start ****************
+#include "../../../Common/UTFConvert.h"
+// **************** NanaZip Modification End ****************
 
 #include "../../../Windows/FileDir.h"
 #include "../../../Windows/FileName.h"
@@ -1241,6 +1244,8 @@ void CCompressDialog::OnOK()
   _password1Control.GetText(Info.Password);
   if (IsZipFormat())
   {
+    // **************** NanaZip Modification Start ****************
+#if 0 // ******** Annotated 7-Zip Mainline Source Code snippet Start ********
     if (!IsAsciiString(Info.Password))
     {
       ShowErrorMessageHwndRes(*this, IDS_PASSWORD_USE_ASCII);
@@ -1255,6 +1260,37 @@ void CCompressDialog::OnOK()
         return;
       }
     }
+#endif // ******** Annotated 7-Zip Mainline Source Code snippet End ********
+    UString Method = this->GetEncryptionMethodSpec();
+    const bool IsAesMode = Method.IsPrefixedBy_Ascii_NoCase("aes");
+    if (!::IsAsciiString(this->Info.Password))
+    {
+      if (!IsAesMode)
+      {
+        ::ShowErrorMessageHwndRes(*this, IDS_PASSWORD_USE_ASCII);
+        return;
+      }
+      if (IDOK != ::MessageBoxW(
+          *this,
+          ::LangString(IDS_PASSWORD_USE_ASCII),
+          L"NanaZip",
+          MB_OKCANCEL | MB_ICONWARNING))
+      {
+        return;
+      }
+    }
+    if (IsAesMode)
+    {
+      const UInt32 MaximumPasswordSize = 99;
+      AString_Wipe Utf8Password;
+      ::ConvertUnicodeToUTF8(this->Info.Password, Utf8Password);
+      if (MaximumPasswordSize < Utf8Password.Len())
+      {
+        ::ShowErrorMessageHwndRes(*this, IDS_PASSWORD_TOO_LONG);
+        return;
+      }
+    }
+    // **************** NanaZip Modification End ****************
   }
   if (!IsShowPasswordChecked())
   {
@@ -1950,19 +1986,19 @@ void CCompressDialog::SetMethod2(int keepMethodId)
   _auto_MethodId = -1;
   const CFormatInfo &fi = g_Formats[GetStaticFormatIndex()];
   const CArcInfoEx &ai = Get_ArcInfoEx();
+  // **************** 7-Zip ZS Modification Start ****************
+#if 0 // ******** Annotated 7-Zip Mainline Source Code snippet Start ********
   if (GetLevel() == 0 && !ai.Flags_HashHandler())
   {
-    // **************** 7-Zip ZS Modification Start ****************
-    /*if (!ai.Is_Tar() &&
+    if (!ai.Is_Tar() &&
         !ai.Is_Zstd())
-    {*/
-    // **************** 7-Zip ZS Modification End ****************
+    {
       MethodChanged();
       return;
-    // **************** 7-Zip ZS Modification Start ****************
-    //}
-    // **************** 7-Zip ZS Modification End ****************
+    }
   }
+#endif // ******** Annotated 7-Zip Mainline Source Code snippet End ********
+  // **************** 7-Zip ZS Modification End ****************
   UString defaultMethod;
   // **************** 7-Zip ZS Modification Start ****************
   int defaultLevel = 5;

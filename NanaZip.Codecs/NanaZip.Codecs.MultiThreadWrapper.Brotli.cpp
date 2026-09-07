@@ -45,6 +45,7 @@ EXTERN_C int NanaZipCodecsBrotliWrite(
 EXTERN_C HRESULT WINAPI NanaZipCodecsBrotliDecode(
     _In_ PNANAZIP_CODECS_ZSTDMT_STREAM_CONTEXT StreamContext,
     _In_ UINT32 NumberOfThreads,
+    _In_ BOOL IsNumberOfThreadsSpecified,
     _In_ UINT32 InputSize)
 {
     BROTLIMT_RdWr_t ReadWrite = {};
@@ -53,13 +54,19 @@ EXTERN_C HRESULT WINAPI NanaZipCodecsBrotliDecode(
     ReadWrite.arg_read = reinterpret_cast<void*>(StreamContext);
     ReadWrite.arg_write = reinterpret_cast<void*>(StreamContext);
 
-    BROTLIMT_DCtx* Context = ::BROTLIMT_createDCtx(NumberOfThreads, InputSize);
+    BROTLIMT_DCtx* Context = ::BROTLIMT_createDCtx(
+        NumberOfThreads,
+        IsNumberOfThreadsSpecified,
+        InputSize);
     if (!Context)
     {
         return S_FALSE;
     }
 
     std::size_t Result = ::BROTLIMT_decompressDCtx(Context, &ReadWrite);
+
+    ::BROTLIMT_freeDCtx(Context);
+
     if (::BROTLIMT_isError(Result))
     {
         if (MT_ERROR(canceled) == Result)
@@ -68,9 +75,7 @@ EXTERN_C HRESULT WINAPI NanaZipCodecsBrotliDecode(
         }
 
         return E_FAIL;
-    }
-
-    ::BROTLIMT_freeDCtx(Context);
+    } 
 
     return S_OK;
 }

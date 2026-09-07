@@ -48,6 +48,9 @@
   <data name="Resource2" xml:space="preserve">
     <value>Português Brasileiro</value>
   </data>
+  <data name="Resource104" xml:space="preserve">
+    <value>Abrir a pasta de destino</value>
+  </data>
   <data name="Resource401" xml:space="preserve">
     <value>OK</value>
   </data>
@@ -172,13 +175,13 @@
     <value>Link</value>
   </data>
   <data name="Resource559" xml:space="preserve">
-    <value>&amp;Correntes Alternantes</value>
+    <value>&amp;Fluxos Alternativos</value>
   </data>
   <data name="Resource590" xml:space="preserve">
-    <value>Abrir por dentro *</value>
+    <value>Abrir Conteúdo (Um nível)</value>
   </data>
   <data name="Resource591" xml:space="preserve">
-    <value>Abrir por dentro #</value>
+    <value>Abrir Conteúdo (Analisador)</value>
   </data>
   <data name="Resource600" xml:space="preserve">
     <value>Selecionar &amp;Tudo</value>
