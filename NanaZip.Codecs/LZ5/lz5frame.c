@@ -29,7 +29,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 You can contact the author at :
 - LZ5 source repository : https://github.com/inikep/lz5
-- LZ5 public forum : https://groups.google.com/forum/#!forum/lz5c
 */
 
 /* LZ5F is a stand-alone API to create LZ5-compressed Frames
@@ -1098,7 +1097,6 @@ size_t LZ5F_decompress(LZ5F_decompressionContext_t decompressionContext,
                 dctxPtr->tmpInTarget = minFHSize;   /* minimum to attempt decode */
                 dctxPtr->dStage = dstage_storeHeader;
             }
-
         case dstage_storeHeader:
             {
                 size_t sizeToCopy = dctxPtr->tmpInTarget - dctxPtr->tmpInSize;
@@ -1153,7 +1151,13 @@ size_t LZ5F_decompress(LZ5F_decompressionContext_t decompressionContext,
 
         /* case dstage_decodeCBlockSize: */   /* no more direct access, to prevent scan-build warning */
             {
-                size_t nextCBlockSize = LZ5F_readLE32(selectedIn) & 0x7FFFFFFFU;
+                // **************** NanaZip Modification Start ****************
+                //size_t nextCBlockSize = LZ5F_readLE32(selectedIn) & 0x7FFFFFFFU;
+                /* Read the block header once to keep its size and flags derived from the same value.
+                 * That also fixes some MSVC optimization issues. */
+                U32 const blockHeader = LZ5F_readLE32(selectedIn);
+                size_t nextCBlockSize = blockHeader & 0x7FFFFFFFU;
+                // **************** NanaZip Modification End ****************
                 if (nextCBlockSize==0)   /* frameEnd signal, no more CBlock */
                 {
                     dctxPtr->dStage = dstage_getSuffix;
@@ -1161,7 +1165,10 @@ size_t LZ5F_decompress(LZ5F_decompressionContext_t decompressionContext,
                 }
                 if (nextCBlockSize > dctxPtr->maxBlockSize) return (size_t)-LZ5F_ERROR_GENERIC; /* invalid cBlockSize */
                 dctxPtr->tmpInTarget = nextCBlockSize;
-                if (LZ5F_readLE32(selectedIn) & LZ5F_BLOCKUNCOMPRESSED_FLAG)
+                // **************** NanaZip Modification Start ****************
+                //if (LZ5F_readLE32(selectedIn) & LZ5F_BLOCKUNCOMPRESSED_FLAG)
+                if (blockHeader & LZ5F_BLOCKUNCOMPRESSED_FLAG)
+                // **************** NanaZip Modification End ****************
                 {
                     dctxPtr->dStage = dstage_copyDirect;
                     break;
