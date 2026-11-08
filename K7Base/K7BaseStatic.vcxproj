@@ -14,7 +14,7 @@
   <Import Project="..\NanaZip.Project\NanaZip.Project.Runtime.props" />
   <ItemGroup>
     <PackageReference Include="Mile.Mobility">
-      <Version>1.1.678</Version>
+      <Version>1.1.732</Version>
     </PackageReference>
     <PackageReference Include="Mile.Windows.Internal">
       <Version>1.0.3729</Version>
@@ -23,7 +23,7 @@
       <Version>1.0.2442</Version>
     </PackageReference>
     <PackageReference Include="Mile.Windows.Helpers">
-      <Version>1.0.1171</Version>
+      <Version>1.0.1427</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

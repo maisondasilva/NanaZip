@@ -2,7 +2,7 @@
 
 ## 7-Zip Mainline
 
-- NanaZip.Core: 26.03
+- NanaZip.Core: 26.06
 - NanaZip.UI.Classic: 22.01
   - Fix for CVE-2025-0411 backported from 7-Zip 24.09.
   - Fix for CVE-2025-11001 and CVE-2025-11002 backported from 7-Zip 25.00.
@@ -17,15 +17,22 @@
     25.01.
   - Extract callback fix backported from 7-Zip 26.02, including the our simple
     fix for CVE-2026-58052.
-- NanaZip.Universal: 26.03
+- NanaZip.Universal: 26.06
 
 ## 7-Zip ZS
 
-- NanaZip.Core: Commit be2bdee6164db8d20a8c262850de864f8bce49e5 after
-  v26.02-v1.5.7-R2.
-- NanaZip.UI.Classic: Unknown because it modifies the old codebase a lot.
-- NanaZip.UI.Modern: Unknown because it modifies the old codebase a lot.
-- NanaZip.Universal: Commit be2bdee6164db8d20a8c262850de864f8bce49e5 after
+- NanaZip.Core: Commit bc1fb8a66d4ef549b6ac9bbc1bd660fecd2a572f after
+  v26.02-v1.5.7-R2. The following files incorporate changes from 7-Zip ZS:
+  - `SevenZip\CPP\7zip\Archive\Nsis\NsisDecode.cpp`
+  - `SevenZip\CPP\7zip\Archive\Nsis\NsisDecode.h`
+  - `SevenZip\CPP\7zip\Archive\Nsis\NsisHandler.cpp`
+  - `SevenZip\CPP\7zip\Archive\Nsis\NsisIn.cpp`
+  - `SevenZip\CPP\7zip\Archive\Zip\ZipHandler.cpp`
+  - `SevenZip\CPP\7zip\Archive\Zip\ZipHandler.h`
+  - `SevenZip\CPP\7zip\Archive\Zip\ZipHeader.h`
+  - `SevenZip\CPP\7zip\Archive\Zip\ZipUpdate.cpp`
+  - `SevenZip\CPP\7zip\Archive\SquashfsHandler.cpp`
+- NanaZip.ZS.Codecs: Commit bc1fb8a66d4ef549b6ac9bbc1bd660fecd2a572f after
   v26.02-v1.5.7-R2.
 
 ## BLAKE3
@@ -34,7 +41,7 @@
 
 ## Brotli
 
-- NanaZip.Codecs: 1.2.0
+- NanaZip.ZS.Codecs: v1.2.1
 
 ## FastLZMA2
 
@@ -46,7 +53,11 @@
 
 ## GmSSL
 
-- NanaZip.Codecs: v3.2.0.
+- NanaZip.Codecs: v3.2.0
+
+## Kanzi
+
+- NanaZip.ZS.Codecs: 2.6.0
 
 ## LittleFS
 
@@ -54,20 +65,20 @@
 
 ## Lizard
 
-- NanaZip.Codecs: Commit d3becc7e80d3eb01147c2f63bed2e23fac533f19 after v2.1
+- NanaZip.ZS.Codecs: Commit d3becc7e80d3eb01147c2f63bed2e23fac533f19 after v2.1
   with current used 7-Zip ZS modifications.
 
 ## LZ4
 
-- NanaZip.Codecs: 1.10.0
+- NanaZip.Codecs: v1.11.0
 
 ## LZ5
 
-- NanaZip.Codecs: Commit 1bc0fef363a44444135badb8e34286d5c56e1d5c after v1.5.
+- NanaZip.ZS.Codecs: Commit 1bc0fef363a44444135badb8e34286d5c56e1d5c after v1.5.
 
 ## RHash
 
-- NanaZip.Codecs: Commit 3dbba4baa3cbdc3baf06d3ba086d8094bd98cd88 after v1.4.6.
+- NanaZip.Codecs: Commit 0517ba2ed33de0afc2d999b3353287dce3b4611c after v1.4.6.
 
 ## xxHash
 

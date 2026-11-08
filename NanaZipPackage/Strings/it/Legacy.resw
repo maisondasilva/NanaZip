@@ -124,7 +124,7 @@
     <value>Apri in E&amp;splora risorse</value>
   </data>
   <data name="Resource543" xml:space="preserve">
-    <value>&amp;Visualizza</value>
+    <value>&amp;Mostra</value>
   </data>
   <data name="Resource544" xml:space="preserve">
     <value>Modifica con l'&amp;editor predefinito</value>
@@ -317,6 +317,9 @@
   </data>
   <data name="Resource1018" xml:space="preserve">
     <value>Dizionario</value>
+  </data>
+  <data name="Resource1019" xml:space="preserve">
+    <value>CRC</value>
   </data>
   <data name="Resource1020" xml:space="preserve">
     <value>Tipo</value>

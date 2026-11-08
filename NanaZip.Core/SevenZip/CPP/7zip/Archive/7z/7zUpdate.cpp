@@ -584,12 +584,7 @@ static HRESULT WriteRange(IInStream *inStream, ISequentialOutStream *outStream,
     UInt64 position, UInt64 size, ICompressProgressInfo *progress)
 {
   RINOK(InStream_SeekSet(inStream, position))
-  CMyComPtr2_Create<ISequentialInStream, CLimitedSequentialInStream> streamSpec;
-  streamSpec->SetStream(inStream);
-  streamSpec->Init(size);
-  CMyComPtr2_Create<ICompressCoder, NCompress::CCopyCoder> copyCoder;
-  RINOK(copyCoder.Interface()->Code(streamSpec, outStream, NULL, NULL, progress))
-  return (copyCoder->TotalSize == size ? S_OK : E_FAIL);
+  return NCompress::CopyStream_ExactSize(inStream, outStream, size, progress);
 }
 
 /*
@@ -721,9 +716,6 @@ static int CompareEmptyItems(const unsigned *p1, const unsigned *p2, void *param
 
 static const char * const g_Exts =
   " 7z xz lzma ace arc arj bz tbz bz2 tbz2 cab deb gz tgz ha lha lzh lzo lzx pak rar rpm sit zoo"
-  // **************** 7-Zip ZS Modification Start ****************
-  " lzma2 liz tliz lz tlz lz4 tlz4 lz5 tlz5 zst tzst zstd tzstd"
-  // **************** 7-Zip ZS Modification End ****************
   " zip jar ear war msi"
   " 3gp avi mov mpeg mpg mpe wmv"
   " aac ape fla flac la mp3 m4a mp4 ofr ogg pac ra rm rka shn swa tta wv wma wav"
